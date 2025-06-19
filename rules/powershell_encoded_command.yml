@@ -1,0 +1,26 @@
+title: Suspicious PowerShell Encoded Command
+id: 9b7c2ba6-cdcd-4f65-8a6a-41d8e4cda9df
+status: experimental
+description: Detects use of PowerShell with encoded command, often seen in malicious activity.
+author: Cade Gray
+date: 2025/06/18
+references:
+    - https://attack.mitre.org/techniques/T1059/001/
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        CommandLine|contains: 'powershell'
+        CommandLine|contains: 'encodedcommand'
+    condition: selection
+fields:
+    - CommandLine
+    - ParentImage
+    - Image
+tags:
+    - attack.execution
+    - attack.t1059.001
+falsepositives:
+    - Administrators using obfuscation
+level: high

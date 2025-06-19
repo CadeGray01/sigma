@@ -1,0 +1,29 @@
+title: Certutil File Download
+id: b2d69e24-4b23-4c51-92b7-2e42b3cf7e67
+status: experimental
+description: Detects use of certutil.exe to download files, commonly used by attackers for staging payloads.
+author: Cade Gray
+date: 2025/06/18
+references:
+    - https://attack.mitre.org/techniques/T1105/
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        CommandLine|contains|all:
+            - 'certutil'
+            - '-urlcache'
+            - '-split'
+            - 'http'
+    condition: selection
+fields:
+    - CommandLine
+    - ParentImage
+    - Image
+tags:
+    - attack.command_and_control
+    - attack.t1105
+falsepositives:
+    - Admin use for certificate operations
+level: high
